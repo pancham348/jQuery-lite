@@ -1,13 +1,24 @@
 (function(){
 
-  var $l = window.$l =  function(selector){
-      if (selector instanceof HTMLElement){
-        var node = [selector]
+  var $l = window.$l =  function(arg){
+    var triggers = []
+    debugger;
+      if (arg instanceof HTMLElement){
+        var node = [arg]
         return new DOMNodeCollection(node);
-      }else{
+      }else if(arg instanceof String){
         var nodes =  Array.prototype.slice.call(document.querySelectorAll(selector));
         return new DOMNodeCollection(nodes);
+      }else if(arg instanceof Function){
+        if(document.readyState === "complete" || document.readyState === "interactive"){
+          triggers.forEach(function(action){
+            action.call(this)
+          })
+        }else{
+          this.triggers.push(arg)
+        }
       }
+
   };
 
   var DOMNodeCollection = function(elementsArray){
@@ -129,6 +140,10 @@ DOMNodeCollection.prototype.off = function(eventType, DOMEvent){
   collection.forEach(function(element) {
     element.removeEventListener(eventType, DOMEvent)
   });
+
+}
+
+DOMNodeCollection.prototype.ready = function(callback) {
 
 }
 
