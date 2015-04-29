@@ -123,13 +123,14 @@ DOMNodeCollection.prototype.on = function(eventType, DOMEvent){
 
 }
 
-DOMNodeCollection.prototype.off = function(eventType){
+DOMNodeCollection.prototype.off = function(eventType, DOMEvent){
   var collection = this.HTMLElements;
 
   collection.forEach(function(element) {
-    element.removeEventListener(eventType)
+    element.removeEventListener(eventType, DOMEvent)
   });
 
 }
+
 
 })();
