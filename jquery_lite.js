@@ -45,6 +45,31 @@
     return "something wrong happened";
   };
 
+  DOMNodeCollection.prototype.removeClass = function(className) {
+    this.HTMLElements.forEach(function (element){
+      element.className = element.className.replace(className, "");
+    })
+
+    return className + " elements removed...";
+  }
+
+  DOMNodeCollection.prototype.addClass = function(className) {
+    var that = this;
+    this.HTMLElements.forEach(function (element){
+      element.className = element.className.replace(className,"")
+      if(element.className === ""){
+        element.className = element.className + className;
+      }else{
+        element.className = element.className + " " + className;
+      }
+    })
+
+    return className + " elements added...";
+  }
+
+DOMNodeCollection.prototype.children = function(selector){
+
+}
 
 
 })();
