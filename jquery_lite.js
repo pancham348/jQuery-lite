@@ -96,12 +96,40 @@ DOMNodeCollection.prototype.parent = function(){
 DOMNodeCollection.prototype.find = function(selector){
   var results = [];
   var collection = this.HTMLElements;
-  this.HTMLElements.forEach(function(element){
-    var result = element.querySelectorAll(selector)
-    results = results.concat([].slice.call(result))
-  })
+  collection.forEach(function(element){
+    var result = element.querySelectorAll(selector);
+    results = results.concat([].slice.call(result));
+  });
 
   return new DOMNodeCollection(results);
+}
+
+DOMNodeCollection.prototype.remove = function(selector) {
+  var collection = this.find(selector).HTMLElements;
+
+  collection.forEach(function(element) {
+    element.remove();
+  });
+
+  return "Removed nodes..";
+}
+
+DOMNodeCollection.prototype.on = function(eventType, DOMEvent){
+  var collection = this.HTMLElements;
+
+  collection.forEach(function(element) {
+    element.addEventListener(eventType, DOMEvent)
+  });
+
+}
+
+DOMNodeCollection.prototype.off = function(eventType){
+  var collection = this.HTMLElements;
+
+  collection.forEach(function(element) {
+    element.removeEventListener(eventType)
+  });
+
 }
 
 })();
