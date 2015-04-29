@@ -21,6 +21,12 @@
     }
   }
 
+  DOMNodeCollection.prototype.empty = function() {
+    this.HTMLElements.forEach(function(node) {
+      node.innerHTML = "";
+    });
+  }
+
 
 
 })();
