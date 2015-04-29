@@ -67,9 +67,41 @@
     return className + " elements added...";
   }
 
-DOMNodeCollection.prototype.children = function(selector){
+DOMNodeCollection.prototype.children = function(){
+  var result = [];
+  var collection = this.HTMLElements;
 
+  collection.forEach(function(element) {
+    result = result.concat([].slice.call(element.children));
+  });
+
+  return new DOMNodeCollection(result);
 }
 
+DOMNodeCollection.prototype.parent = function(){
+  var result = [];
+  var collection = this.HTMLElements;
+  var parents = {}
+  collection.forEach(function(element){
+    if(!parents[element]){
+      result.push(element.parentNode);
+      parents[element] = true;
+    }
+  });
+
+
+  return new DOMNodeCollection(result);
+}
+
+DOMNodeCollection.prototype.find = function(selector){
+  var results = [];
+  var collection = this.HTMLElements;
+  this.HTMLElements.forEach(function(element){
+    var result = element.querySelectorAll(selector)
+    results = results.concat([].slice.call(result))
+  })
+
+  return new DOMNodeCollection(results);
+}
 
 })();
