@@ -1,24 +1,50 @@
 (function(){
 
   var $l = window.$l =  function(arg){
-    var triggers = []
-    debugger;
+    var triggers = [];
       if (arg instanceof HTMLElement){
-        var node = [arg]
+        var node = [arg];
         return new DOMNodeCollection(node);
-      }else if(arg instanceof String){
-        var nodes =  Array.prototype.slice.call(document.querySelectorAll(selector));
+      }else if(typeof(arg) === 'string'){
+        var nodes =  Array.prototype.slice.call(document.querySelectorAll(arg));
         return new DOMNodeCollection(nodes);
-      }else if(arg instanceof Function){
-        if(document.readyState === "complete" || document.readyState === "interactive"){
-          triggers.forEach(function(action){
-            action.call(this)
-          })
-        }else{
-          this.triggers.push(arg)
+      }else if(typeof(arg) === 'function'){
+        if(document.readyState != "complete" ){
+          triggers.push(arg);
         }
       }
 
+      document.addEventListener('DOMContentLoaded', function() {
+        triggers.forEach(function(action){
+          action.call(this);
+        });
+      });
+
+  };
+
+  $l.prototype.extend = function(){
+    var extended = {};
+    var prop;
+
+    //build the target
+    var args = [].slice.call(arguments)
+    var defaults = args.shift();
+    for(prop in defaults){
+      if(Object.prototype.hasOwnProperty.call(defaults, prop)){
+        extended[prop] = defaults[prop];
+      }
+    }
+
+    args.forEach(function(option) {
+      for(prop in option){
+        if(Object.prototype.hasOwnProperty.call(option, prop)){
+          extended[prop] = option[prop];
+        }
+      }
+    });
+
+
+    return extended;
   };
 
   var DOMNodeCollection = function(elementsArray){
@@ -143,9 +169,6 @@ DOMNodeCollection.prototype.off = function(eventType, DOMEvent){
 
 }
 
-DOMNodeCollection.prototype.ready = function(callback) {
-
-}
 
 
 })();
