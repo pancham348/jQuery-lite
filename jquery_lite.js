@@ -49,7 +49,7 @@
 
   $l.prototype.ajax = function(options){
     var defaults = {url: "http://api.openweathermap.org/data/2.5/weather?q=London,uk", method: "GET", data: {},
-        dataType: "html" };
+        dataType: "html", success: function(data){ }};
     var ajaxObj = this.extend(defaults, options);
     function loadXMLDoc(){
       var xmlhttp;
@@ -63,7 +63,8 @@
       xmlhttp.onreadystatechange = function(){
         if(xmlhttp.readyState === XMLHttpRequest.DONE){
           if(xmlhttp.status === 200){
-            document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+            ajaxObj.data = xmlhttp.responseText;
+            ajaxObj.success(ajaxObj.data)
           }
           else if(xmlhttp.status == 400) {
               alert('There was an error 400')
