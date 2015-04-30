@@ -47,6 +47,40 @@
     return extended;
   };
 
+  $l.prototype.ajax = function(options){
+    var defaults = {url: "http://api.openweathermap.org/data/2.5/weather?q=London,uk", method: "GET", data: {},
+        dataType: "html" };
+    var ajaxObj = this.extend(defaults, options);
+    function loadXMLDoc(){
+      var xmlhttp;
+
+      if(window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest()
+      }else{
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+      }
+
+      xmlhttp.onreadystatechange = function(){
+        if(xmlhttp.readyState === XMLHttpRequest.DONE){
+          if(xmlhttp.status === 200){
+            document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+          }
+          else if(xmlhttp.status == 400) {
+              alert('There was an error 400')
+           }
+           else {
+               alert('something else other than 200 was returned')
+           }
+        }
+      }
+
+      xmlhttp.open(ajaxObj.method, ajaxObj.url, true);
+      xmlhttp.send();
+    }
+
+    return loadXMLDoc()
+  };
+
   var DOMNodeCollection = function(elementsArray){
       this.HTMLElements = elementsArray;
   };
